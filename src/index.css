@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.card:hover {
+    box-shadow: rgba(0, 0, 0, 0.22) 0px 36px 42px;
+    transform: translate3d(0px, -3px, 0px);
+}
