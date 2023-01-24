@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import { Provider } from 'react-redux'
 import { store } from './state/store'
-import Home  from './components/Home'
-import RentList from './components/RentList'
-import CreateRent from './components/CreateRent'
-import RentDetail from './components/RentDetail'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
+const App = React.lazy(() => import("./App"));
+
+const Home = React.lazy(() => import("./components/Home"));
+const RentList = React.lazy(() => import("./components/RentList"));
+const CreateRent = React.lazy(() => import("./components/CreateRent"));
+const RentDetail = React.lazy(() => import("./components/RentDetail"));
+const Loader = React.lazy(() => import("./components/loader"));
+
+
+
 
 const router = createBrowserRouter([
   {
@@ -40,9 +45,11 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>
+  <Suspense fallback={<Loader />}>
+    <React.StrictMode>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </React.StrictMode>
+  </Suspense>
 );

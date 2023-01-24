@@ -1,8 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import reducer from './slice'
+import { apiSlice } from '../services/api-slice'
 
 export const store = configureStore({
   reducer: {
-    rental: reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(apiSlice.middleware),
 })

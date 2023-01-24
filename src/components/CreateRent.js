@@ -1,11 +1,7 @@
 import { Form, Field } from "react-final-form";
 import { images } from "../mock/rentList"
-import * as actions from '../state/action'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom";
-
-
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+import { usePostRentMutation } from '../services/api-slice'
 
 const validate = (value) => {
   if (value?.length < 6) {
@@ -15,14 +11,18 @@ const validate = (value) => {
 };
 
 const CreateRent = () => {
-  const dispatch = useDispatch();
+  const [postRent, { isLoading, isError }] = usePostRentMutation();
   const navigate = useNavigate()
+  
   const onSubmit = async (values) => {
-    await sleep();
-    const payload = { ...values, id: Math.random().toString(), images };
-    dispatch(actions.onCreateRent(payload));
+    const payload = { ...values, images };
+    await postRent(payload).unwrap();
     navigate('/rent-list');
   };
+
+  if (isLoading) return (<div> is loading ...</div>);
+
+  if (isError) return (<div> is error ...</div>);
 
 	return (
     <div className="d-flex justify-content-center">
